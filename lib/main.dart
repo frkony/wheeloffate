@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title:
           'Wheel Of Fate', // görev yöneticisi tarafında uygulama küçülünce görünücek olan Title.
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
