@@ -24,7 +24,7 @@ class _Home extends State<Home> {
     _decisionButtonOnPressed() {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Fate()),
+        MaterialPageRoute(builder: (context) => Fate()),
       );
     }
 
@@ -38,7 +38,6 @@ class _Home extends State<Home> {
         centerTitle: true,
         title: const Text("Wheel Of Fate"),
         /*actions: [
-
         ],*/
       ),*/
       body: Center(

@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:wheeloffate/Home/l10n/common.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class Fate extends StatefulWidget {
   const Fate({Key? key}) : super(key: key);
@@ -13,6 +14,8 @@ class Fate extends StatefulWidget {
 class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
+  InterstitialAd? _interstitialAd;
+  late bool _isAdLoaded = false;
   String? sonuc;
   String? choiceOne;
   String? choiceTwo;
@@ -25,6 +28,10 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    // Google Ads Mob Başla
+    _initAd();
+    // Google Ads Mob Son
+    // Çark Rotation Başla
     var rastgeleSayi = Random().nextInt(360);
     //debugPrint('rastgele sayi : $rastgeleSayi');
     controller = AnimationController(
@@ -49,6 +56,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
         } else {
           sonuc = AppLocalizations.of(context)!.sansizlik;
         }
+        _interstitialAd?.show();
         openDialog(sonuc).whenComplete(() => controller.reset());
         rastgeleSayi = Random().nextInt(360);
         setRotation(rastgeleSayi + 1440);
@@ -58,6 +66,31 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
       }
     });
     setRotation(rastgeleSayi + 1440);
+    //Çark Rotation Son
+  }
+
+  void _initAd() {
+    InterstitialAd.load(
+        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: onLoaded,
+          onAdFailedToLoad: (error) {},
+        ));
+  }
+
+  void onLoaded(InterstitialAd ad) {
+    _interstitialAd = ad;
+    _isAdLoaded = true;
+
+    _interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
+      onAdDismissedFullScreenContent: (ad) {
+        _interstitialAd?.dispose();
+      },
+      onAdFailedToShowFullScreenContent: (ad, error) {
+        _interstitialAd?.dispose();
+      },
+    );
   }
 
   void setRotation(int degrees) {

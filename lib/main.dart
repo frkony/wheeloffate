@@ -2,8 +2,11 @@ import 'package:wheeloffate/Home/Home.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:wheeloffate/Home/l10n/l10n.dart';
 import 'Home/l10n/common.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   runApp(const MyApp());
 }
 
