@@ -65,7 +65,9 @@ flutter:
     - src/img/AppLogo/logo.png # Uygulama Logosu
     - src/img/EofLogo/eof.png  # Şirket Logosu
     - src/img/Picture/kararUcgeni.png # Çark Karar Üçgeni
-    - src/img/Picture/wheel.png # Çark 
+    - src/img/Picture/wheelTwo.png # 2'li Çark
+    - src/img/Picture/wheelFour.png # 4' lü
+    - src/img/Picture/wheelSix.png # 6 'lıÇark 
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -78,11 +80,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Righteous
+      fonts:
+        - asset: assests/fonts/Righteous-Regular.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

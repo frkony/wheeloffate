@@ -41,7 +41,10 @@ class Oneri {
       AppLocalizations.of(context)!.hedef,
       AppLocalizations.of(context)!.spor,
       AppLocalizations.of(context)!.kitap,
-      AppLocalizations.of(context)!.dinlenme
+      AppLocalizations.of(context)!.dinlenme,
+      "arttır1",
+      "arttır1",
+      "arttır1",
     ];
     return list;
   }

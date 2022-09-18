@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 import 'package:wheeloffate/Home/l10n/common.dart';
 import 'package:wheeloffate/Home/staticData/staticData.dart';
+import 'package:wheeloffate/Home/sug-fate.dart';
 
 class Suggestion extends StatefulWidget {
   const Suggestion({Key? key}) : super(key: key);
@@ -12,8 +15,23 @@ class Suggestion extends StatefulWidget {
 class _Suggestion extends State<Suggestion> {
   String? oneriBaslik;
   List<String>? oneriler;
+  List<String>? onerilerFilm;
+  List<String>? onerilerYemek;
+  List<String>? onerilerAktivite;
   int? onerilerListCount;
   Oneri oneriC = Oneri();
+  String? o1;
+  String? o2;
+  String? o3;
+  String? o4;
+  String? o5;
+  String? o6;
+  var randomSayi;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void listeOlustur() {
     if (oneriBaslik == AppLocalizations.of(context)!.film) {
@@ -36,10 +54,46 @@ class _Suggestion extends State<Suggestion> {
     final double screenWidth = screenInfo.size.width;
     final double screenHeight = screenInfo.size.height;
 
+    onerilerFilm = oneriC.OneriFilm(context);
+    onerilerYemek = oneriC.OneriYemek(context);
+    onerilerAktivite = oneriC.OneriAktivite(context);
+
+    void rastgeleDoldurCark() {
+      for (var i = 0; i < 6; i++) {
+        randomSayi = Random().nextInt(9);
+        print(randomSayi);
+        if (i == 0) {
+          o1 = oneriler?[randomSayi];
+        }
+        if (i == 1) {
+          o2 = oneriler?[randomSayi];
+        }
+        if (i == 2) {
+          o3 = oneriler?[randomSayi];
+        }
+        if (i == 3) {
+          o4 = oneriler?[randomSayi];
+        }
+        if (i == 4) {
+          o5 = oneriler?[randomSayi];
+        }
+        if (i == 5) {
+          o6 = oneriler?[randomSayi];
+        }
+      }
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SugFate(o1!, o2!, o3!, o4!, o5!, o6!)));
+    }
+
     Future openDialog(oneriBaslik) => showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text("$oneriBaslik"),
+            title: Text(
+              "$oneriBaslik",
+              style: const TextStyle(fontFamily: "Righteous"),
+            ),
             content: Container(
               width: screenWidth / 1.3,
               height: screenHeight / 2,
@@ -47,20 +101,44 @@ class _Suggestion extends State<Suggestion> {
                 itemCount: onerilerListCount,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(oneriler![index]),
+                    title: Text(
+                      oneriler![index],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.6),
+                        //fontStyle: FontStyle.italic,
+                        //shadows: Shadow(blurRadius: 2,color: Colors.black,offset: Offset.infinite)
+                        fontFamily: "Righteous",
+                      ),
+                    ),
                   );
                 },
               ),
             ),
-            actions: const [
-              //Text("OK"),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        rastgeleDoldurCark();
+                      },
+                      child: const Text(
+                        "Rastgele Doldur",
+                        style: TextStyle(fontFamily: "Righteous"),
+                      )),
+                ],
+              )
             ],
           ),
         );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.oneriler),
+        title: Text(
+          AppLocalizations.of(context)!.oneriler,
+          style: const TextStyle(fontFamily: "Righteous"),
+        ),
         centerTitle: true,
       ),
       body: Center(
@@ -76,7 +154,10 @@ class _Suggestion extends State<Suggestion> {
                       listeOlustur();
                       openDialog(oneriBaslik);
                     },
-                    child: Text(AppLocalizations.of(context)!.film))),
+                    child: Text(
+                      AppLocalizations.of(context)!.film,
+                      style: const TextStyle(fontFamily: "Righteous"),
+                    ))),
             Padding(
               padding: EdgeInsets.only(top: screenHeight / 50),
               child: SizedBox(
@@ -88,7 +169,10 @@ class _Suggestion extends State<Suggestion> {
                         listeOlustur();
                         openDialog(oneriBaslik);
                       },
-                      child: Text(AppLocalizations.of(context)!.yemek))),
+                      child: Text(
+                        AppLocalizations.of(context)!.yemek,
+                        style: const TextStyle(fontFamily: "Righteous"),
+                      ))),
             ),
             Padding(
               padding: EdgeInsets.only(top: screenHeight / 50),
@@ -101,7 +185,10 @@ class _Suggestion extends State<Suggestion> {
                         listeOlustur();
                         openDialog(oneriBaslik);
                       },
-                      child: Text(AppLocalizations.of(context)!.aktivite))),
+                      child: Text(
+                        AppLocalizations.of(context)!.aktivite,
+                        style: const TextStyle(fontFamily: "Righteous"),
+                      ))),
             ),
           ],
         ),
