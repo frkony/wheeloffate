@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:wheeloffate/Home/l10n/common.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:wheeloffate/Home/staticData/staticData.dart';
 
 class SugFate extends StatefulWidget {
   final String s1;
@@ -33,6 +32,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
   //----------------------
   // Çark Dönerken Karar butonunu iptal et
   bool? _isButtonEnable = true;
+  bool? _isBackButton = true;
   //----------------------------
   @override
   void initState() {
@@ -72,6 +72,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
         rastgeleSayi = Random().nextInt(360);
         setState(() {
           _isButtonEnable = true;
+          _isBackButton = true;
         });
         setRotation(rastgeleSayi + 1440);
       }
@@ -114,8 +115,6 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
         builder: (context) => AlertDialog(
           title: Text(AppLocalizations.of(context)!.kaderinTavsiyesi),
           content: Container(
-            width: 100,
-            height: 40,
             child: Text("$text"),
           ),
           actions: [
@@ -142,6 +141,14 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
     controller.dispose();
   }
 
+  Future<bool> _onWillPop() async {
+    if (_isBackButton == false) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
@@ -149,184 +156,189 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
     var screenInfo = MediaQuery.of(context);
     final double screenWidth = screenInfo.size.width;
     final double screenHeight = screenInfo.size.height;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.kararVer),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.only(top: screenHeight / 38),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: TextField(
-                        maxLength: 30,
-                        controller: TextEditingController(text: widget.s1),
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.secenekGir,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.red,
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.kararVer),
+          centerTitle: true,
+        ),
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: screenHeight / 38),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: TextField(
+                          enabled: false,
+                          controller: TextEditingController(text: widget.s1),
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.secenekGir,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.red,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: TextField(
-                        maxLength: 30,
-                        controller: TextEditingController(text: widget.s2),
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.secenekGir,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.orange,
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: TextField(
+                          enabled: false,
+                          controller: TextEditingController(text: widget.s2),
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.secenekGir,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.orange,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: TextField(
-                        maxLength: 30,
-                        controller: TextEditingController(text: widget.s3),
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.secenekGir,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.yellow,
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: TextField(
-                        maxLength: 30,
-                        controller: TextEditingController(text: widget.s4),
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.secenekGir,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.green,
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: TextField(
-                        maxLength: 30,
-                        controller: TextEditingController(text: widget.s5),
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.secenekGir,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.blue,
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: TextField(
-                        maxLength: 30,
-                        controller: TextEditingController(text: widget.s6),
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.secenekGir,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.purple,
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: screenHeight / 80),
-                child: Image.asset(
-                  'src/img/Picture/kararUcgeni.png',
-                  width: screenWidth / 15,
+                  ],
                 ),
-              ),
-              AnimatedBuilder(
-                animation: animation,
-                child: Padding(
-                  padding: EdgeInsets.only(top: screenHeight / 100),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: TextField(
+                          enabled: false,
+                          controller: TextEditingController(text: widget.s3),
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.secenekGir,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.yellow,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: TextField(
+                          enabled: false,
+                          controller: TextEditingController(text: widget.s4),
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.secenekGir,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.green,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: TextField(
+                          enabled: false,
+                          controller: TextEditingController(text: widget.s5),
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.secenekGir,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.blue,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: TextField(
+                          enabled: false,
+                          controller: TextEditingController(text: widget.s6),
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.secenekGir,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.purple,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: screenHeight / 80),
                   child: Image.asset(
-                    'src/img/Picture/wheelSix.png',
-                    width: screenWidth / 1.3,
+                    'src/img/Picture/kararUcgeni.png',
+                    width: screenWidth / 15,
                   ),
                 ),
-                builder: (context, child) => Transform.rotate(
-                  angle: animation.value,
-                  child: child,
+                AnimatedBuilder(
+                  animation: animation,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: screenHeight / 100),
+                    child: Image.asset(
+                      'src/img/Picture/wheelSix.png',
+                      width: screenWidth / 1.3,
+                    ),
+                  ),
+                  builder: (context, child) => Transform.rotate(
+                    angle: animation.value,
+                    child: child,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: screenWidth / 10),
-                child: SizedBox(
-                  width: screenWidth / 2,
-                  height: screenHeight / 18,
-                  child: _isButtonEnable!
-                      ? ElevatedButton(
-                          onPressed: () {
-                            controller.forward(from: 0);
-                            setState(() {
-                              _isButtonEnable = false;
-                            });
-                          },
-                          child: Text(AppLocalizations.of(context)!.kararVer))
-                      : ElevatedButton(
-                          onPressed: () {},
-                          child: Text(AppLocalizations.of(context)!.kararVer),
-                          style:
-                              ElevatedButton.styleFrom(primary: Colors.grey)),
+                Padding(
+                  padding: EdgeInsets.only(top: screenWidth / 10),
+                  child: SizedBox(
+                    width: screenWidth / 2,
+                    height: screenHeight / 18,
+                    child: _isButtonEnable!
+                        ? ElevatedButton(
+                            onPressed: () {
+                              controller.forward(from: 0);
+                              setState(() {
+                                _isButtonEnable = false;
+                                _isBackButton = false;
+                              });
+                            },
+                            child: Text(AppLocalizations.of(context)!.kararVer))
+                        : ElevatedButton(
+                            onPressed: () {},
+                            child: Text(AppLocalizations.of(context)!.kararVer),
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.grey)),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

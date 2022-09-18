@@ -97,15 +97,18 @@ class _Suggestion extends State<Suggestion> {
             content: Container(
               width: screenWidth / 1.3,
               height: screenHeight / 2,
-              child: ListView.builder(
-                itemCount: onerilerListCount,
+              child: ListView.separated(
+                separatorBuilder: (context, index) {
+                  return const Divider();
+                },
+                itemCount: onerilerListCount!,
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(
                       oneriler![index],
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.black.withOpacity(0.6),
+                        color: Colors.black.withOpacity(0.8),
                         //fontStyle: FontStyle.italic,
                         //shadows: Shadow(blurRadius: 2,color: Colors.black,offset: Offset.infinite)
                         fontFamily: "Righteous",
