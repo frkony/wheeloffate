@@ -33,6 +33,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
   // Çark Dönerken Karar butonunu iptal et
   bool? _isButtonEnable = true;
   bool? _isBackButton = true;
+  bool? _isAbsorting = false;
   //----------------------------
   @override
   void initState() {
@@ -51,6 +52,8 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
 
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
+        debugPrint("girdi");
+        print(rastgeleSayi);
         await Future.delayed(const Duration(milliseconds: 700));
         if (rastgeleSayi > 0 && rastgeleSayi < 60) {
           sonuc = widget.s1;
@@ -73,6 +76,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
         setState(() {
           _isButtonEnable = true;
           _isBackButton = true;
+          _isAbsorting = false;
         });
         setRotation(rastgeleSayi + 1440);
       }
@@ -115,7 +119,8 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
         builder: (context) => AlertDialog(
           title: Text(AppLocalizations.of(context)!.kaderinTavsiyesi),
           content: Container(
-            child: Text("$text"),
+            child: Text(
+                "${text != null ? text! : "Hay Aksi! Önerilerde bir problem var. Lütfen Bildirin."}"),
           ),
           actions: [
             GestureDetector(
@@ -184,7 +189,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                             hintText: AppLocalizations.of(context)!.secenekGir,
                             counterText: "",
                             filled: true,
-                            fillColor: Colors.red,
+                            fillColor: Colors.yellow,
                             border: const OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10))),
@@ -202,47 +207,6 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                             hintText: AppLocalizations.of(context)!.secenekGir,
                             counterText: "",
                             filled: true,
-                            fillColor: Colors.orange,
-                            border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: TextField(
-                          enabled: false,
-                          controller: TextEditingController(text: widget.s3),
-                          decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!.secenekGir,
-                            counterText: "",
-                            filled: true,
-                            fillColor: Colors.yellow,
-                            border: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: TextField(
-                          enabled: false,
-                          controller: TextEditingController(text: widget.s4),
-                          decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!.secenekGir,
-                            counterText: "",
-                            filled: true,
                             fillColor: Colors.green,
                             border: const OutlineInputBorder(
                                 borderRadius:
@@ -253,6 +217,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                     ),
                   ],
                 ),
+                const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -261,7 +226,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                         padding: const EdgeInsets.all(1.0),
                         child: TextField(
                           enabled: false,
-                          controller: TextEditingController(text: widget.s5),
+                          controller: TextEditingController(text: widget.s3),
                           decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!.secenekGir,
                             counterText: "",
@@ -279,7 +244,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                         padding: const EdgeInsets.all(1.0),
                         child: TextField(
                           enabled: false,
-                          controller: TextEditingController(text: widget.s6),
+                          controller: TextEditingController(text: widget.s4),
                           decoration: InputDecoration(
                             hintText: AppLocalizations.of(context)!.secenekGir,
                             counterText: "",
@@ -294,8 +259,51 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                     ),
                   ],
                 ),
+                const Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: TextField(
+                          enabled: false,
+                          controller: TextEditingController(text: widget.s5),
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.secenekGir,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.red,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: TextField(
+                          enabled: false,
+                          controller: TextEditingController(text: widget.s6),
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.secenekGir,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.orange,
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 Padding(
-                  padding: EdgeInsets.only(top: screenHeight / 80),
+                  padding: EdgeInsets.only(
+                      bottom: screenHeight / 80, top: screenHeight / 80),
                   child: Image.asset(
                     'src/img/Picture/kararUcgeni.png',
                     width: screenWidth / 15,
@@ -303,11 +311,21 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                 ),
                 AnimatedBuilder(
                   animation: animation,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: screenHeight / 100),
-                    child: Image.asset(
-                      'src/img/Picture/wheelSix.png',
-                      width: screenWidth / 1.3,
+                  child: AbsorbPointer(
+                    absorbing: _isAbsorting!,
+                    child: InkWell(
+                      onTapDown: (details) {
+                        controller.forward(from: 0);
+                        setState(() {
+                          _isButtonEnable = false;
+                          _isBackButton = false;
+                          _isAbsorting = true;
+                        });
+                      },
+                      child: Image.asset(
+                        'src/img/Picture/wheelSix.png',
+                        width: screenWidth / 1.25,
+                      ),
                     ),
                   ),
                   builder: (context, child) => Transform.rotate(
@@ -327,14 +345,19 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                               setState(() {
                                 _isButtonEnable = false;
                                 _isBackButton = false;
+                                _isAbsorting = true;
                               });
                             },
                             child: Text(AppLocalizations.of(context)!.kararVer))
-                        : ElevatedButton(
-                            onPressed: () {},
-                            child: Text(AppLocalizations.of(context)!.kararVer),
-                            style:
-                                ElevatedButton.styleFrom(primary: Colors.grey)),
+                        : AbsorbPointer(
+                            absorbing: _isAbsorting!,
+                            child: ElevatedButton(
+                                onPressed: () {},
+                                child: Text(
+                                    AppLocalizations.of(context)!.kararVer),
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.grey)),
+                          ),
                   ),
                 ),
               ],

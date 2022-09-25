@@ -60,8 +60,7 @@ class _Suggestion extends State<Suggestion> {
 
     void rastgeleDoldurCark() {
       for (var i = 0; i < 6; i++) {
-        randomSayi = Random().nextInt(9);
-        print(randomSayi);
+        randomSayi = Random().nextInt(11);
         if (i == 0) {
           o1 = oneriler?[randomSayi];
         }

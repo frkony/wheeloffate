@@ -34,6 +34,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
   // Çark Dönerken Karar butonunu iptal et
   bool? _isButtonEnable = true;
   bool? _isBackButton = true;
+  bool? _isAbsorting = false;
   //----------------------------
   // Text Field'ın index sayısı. bu duruma göre ekranda gösterilcek
   dynamic _textIndex = 1;
@@ -73,6 +74,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
           setState(() {
             _isButtonEnable = true;
             _isBackButton = true;
+            _isAbsorting = false;
           });
           setRotation(rastgeleSayi + 1440);
         } else if (_textIndex == 2) {
@@ -95,6 +97,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
           setState(() {
             _isButtonEnable = true;
             _isBackButton = true;
+            _isAbsorting = false;
           });
           setRotation(rastgeleSayi + 1440);
         } else {
@@ -120,6 +123,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
           setState(() {
             _isButtonEnable = true;
             _isBackButton = true;
+            _isAbsorting = false;
           });
           setRotation(rastgeleSayi + 1440);
         }
@@ -175,7 +179,8 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
         builder: (context) => AlertDialog(
           title: Text(AppLocalizations.of(context)!.kaderinTavsiyesi),
           content: Container(
-            child: Text("$text"),
+            child: Text(
+                "${text != null ? text : "Çark Boş bıraktığınız seçenekte durdu."}"),
           ),
           actions: [
             GestureDetector(
@@ -312,66 +317,74 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                ListView.separated(
-                  itemBuilder: (context, index) {
-                    //return _textFieldContainer(index);
-                    return textInputList.elementAt(index);
-                  },
-                  //itemCount: _textIndex,
-                  itemCount: textInputList.length,
-                  separatorBuilder: (context, index) => const Divider(),
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
+                AbsorbPointer(
+                  absorbing: _isAbsorting!,
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      //return _textFieldContainer(index);
+                      return textInputList.elementAt(index);
+                    },
+                    //itemCount: _textIndex,
+                    itemCount: textInputList.length,
+                    separatorBuilder: (context, index) => const Divider(),
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 35,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.add_circle_outline_outlined,
-                          color: Colors.black,
+                AbsorbPointer(
+                  absorbing: _isAbsorting!,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 35,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.add_circle_outline_outlined,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            if (_textIndex == 1) {
+                              _addInputField(Colors.blue, Colors.purple,
+                                  "choiceThree", "choiceFour");
+                              setState(() {
+                                _textIndex = _textIndex! + 1;
+                              });
+                            } else if (_textIndex == 2) {
+                              _addInputField(Colors.red, Colors.orange,
+                                  "choiceFive", "choiceSix");
+                              setState(() {
+                                _textIndex = _textIndex! + 1;
+                              });
+                            }
+                          },
                         ),
-                        onPressed: () {
-                          if (_textIndex == 1) {
-                            _addInputField(Colors.blue, Colors.purple,
-                                "choiceThree", "choiceFour");
-                            setState(() {
-                              _textIndex = _textIndex! + 1;
-                            });
-                          } else if (_textIndex == 2) {
-                            _addInputField(Colors.red, Colors.orange,
-                                "choiceFive", "choiceSix");
-                            setState(() {
-                              _textIndex = _textIndex! + 1;
-                            });
-                          }
-                        },
                       ),
-                    ),
-                    const Text(
-                      "Seçenek Arttır / Azalt",
-                      style: TextStyle(fontFamily: "Righteous"),
-                    ),
-                    SizedBox(
-                      width: 35,
-                      child: IconButton(
-                        icon: const Icon(Icons.remove_circle_outline_outlined),
-                        onPressed: () {
-                          if (_textIndex != 1) {
-                            setState(() {
-                              _removeInputField();
-                              _textIndex = _textIndex! - 1;
-                            });
-                          }
-                        },
+                      const Text(
+                        "Seçenek Arttır / Azalt",
+                        style: TextStyle(fontFamily: "Righteous"),
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        width: 35,
+                        child: IconButton(
+                          icon:
+                              const Icon(Icons.remove_circle_outline_outlined),
+                          onPressed: () {
+                            if (_textIndex != 1) {
+                              setState(() {
+                                _removeInputField();
+                                _textIndex = _textIndex! - 1;
+                              });
+                            }
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: screenHeight / 80),
+                  padding: EdgeInsets.only(
+                      bottom: screenHeight / 80, top: screenHeight / 80),
                   child: Image.asset(
                     'src/img/Picture/kararUcgeni.png',
                     width: screenWidth / 15,
@@ -380,11 +393,21 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                 _textIndex == 1
                     ? AnimatedBuilder(
                         animation: animation,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: screenHeight / 100),
-                          child: Image.asset(
-                            'src/img/Picture/wheelTwo.png',
-                            width: screenWidth / 1.25,
+                        child: AbsorbPointer(
+                          absorbing: _isAbsorting!,
+                          child: InkWell(
+                            onTapDown: (details) {
+                              controller.forward(from: 0);
+                              setState(() {
+                                _isBackButton = false;
+                                _isButtonEnable = false;
+                                _isAbsorting = true;
+                              });
+                            },
+                            child: Image.asset(
+                              'src/img/Picture/wheelTwo.png',
+                              width: screenWidth / 1.25,
+                            ),
                           ),
                         ),
                         builder: (context, child) => Transform.rotate(
@@ -395,11 +418,21 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                     : _textIndex == 2
                         ? AnimatedBuilder(
                             animation: animation,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: screenHeight / 100),
-                              child: Image.asset(
-                                'src/img/Picture/wheelFour.png',
-                                width: screenWidth / 1.3,
+                            child: AbsorbPointer(
+                              absorbing: _isAbsorting!,
+                              child: InkWell(
+                                onTapDown: (details) {
+                                  controller.forward(from: 0);
+                                  setState(() {
+                                    _isBackButton = false;
+                                    _isButtonEnable = false;
+                                    _isAbsorting = true;
+                                  });
+                                },
+                                child: Image.asset(
+                                  'src/img/Picture/wheelFour.png',
+                                  width: screenWidth / 1.3,
+                                ),
                               ),
                             ),
                             builder: (context, child) => Transform.rotate(
@@ -409,11 +442,21 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                           )
                         : AnimatedBuilder(
                             animation: animation,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: screenHeight / 100),
-                              child: Image.asset(
-                                'src/img/Picture/wheelSix.png',
-                                width: screenWidth / 1.3,
+                            child: AbsorbPointer(
+                              absorbing: _isAbsorting!,
+                              child: InkWell(
+                                onTapDown: (details) {
+                                  controller.forward(from: 0);
+                                  setState(() {
+                                    _isBackButton = false;
+                                    _isButtonEnable = false;
+                                    _isAbsorting = true;
+                                  });
+                                },
+                                child: Image.asset(
+                                  'src/img/Picture/wheelSix.png',
+                                  width: screenWidth / 1.3,
+                                ),
                               ),
                             ),
                             builder: (context, child) => Transform.rotate(
@@ -422,7 +465,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                             ),
                           ),
                 Padding(
-                  padding: EdgeInsets.only(top: screenWidth / 10),
+                  padding: EdgeInsets.only(top: screenWidth / 14),
                   child: SizedBox(
                     width: screenWidth / 2,
                     height: screenHeight / 18,
@@ -433,14 +476,19 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                               setState(() {
                                 _isButtonEnable = false;
                                 _isBackButton = false;
+                                _isAbsorting = true;
                               });
                             },
                             child: Text(AppLocalizations.of(context)!.kararVer))
-                        : ElevatedButton(
-                            onPressed: () {},
-                            child: Text(AppLocalizations.of(context)!.kararVer),
-                            style:
-                                ElevatedButton.styleFrom(primary: Colors.grey)),
+                        : AbsorbPointer(
+                            absorbing: _isAbsorting!,
+                            child: ElevatedButton(
+                                onPressed: () {},
+                                child: Text(
+                                    AppLocalizations.of(context)!.kararVer),
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.grey)),
+                          ),
                   ),
                 ),
               ],
