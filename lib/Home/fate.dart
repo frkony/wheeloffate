@@ -36,9 +36,6 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
   bool? _isBackButton = true;
   bool? _isAbsorting = false;
   //----------------------------
-  // Text Field'ın index sayısı. bu duruma göre ekranda gösterilcek
-  dynamic _textIndex = 1;
-  //-----------------------
   var rastgeleSayi;
 
   @override
@@ -58,7 +55,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
 
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
-        if (_textIndex == 1) {
+        if (textInputList.length == 1) {
           await Future.delayed(const Duration(milliseconds: 700));
           if (rastgeleSayi > 0 && rastgeleSayi < 180) {
             sonuc = choiceOne;
@@ -77,7 +74,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
             _isAbsorting = false;
           });
           setRotation(rastgeleSayi + 1440);
-        } else if (_textIndex == 2) {
+        } else if (textInputList.length == 2) {
           await Future.delayed(const Duration(milliseconds: 700));
           if (rastgeleSayi > 0 && rastgeleSayi < 90) {
             sonuc = choiceOne;
@@ -135,12 +132,10 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (textInputList.isEmpty) {
-      textInputList.add(_textFieldContainer(
-          Colors.yellow, Colors.green, "choiceOne", "choiceTwo"));
+      _addInputField(Colors.yellow, Colors.green, "choiceOne", "choiceTwo");
+      _addInputField(Colors.blue, Colors.purple, "choiceThree", "choiceFour");
+      _addInputField(Colors.red, Colors.orange, "choiceFive", "choiceSix");
     }
-    setState(() {
-      _textIndex = _textIndex;
-    });
   }
 
   void _initAd() {
@@ -324,7 +319,6 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                       //return _textFieldContainer(index);
                       return textInputList.elementAt(index);
                     },
-                    //itemCount: _textIndex,
                     itemCount: textInputList.length,
                     separatorBuilder: (context, index) => const Divider(),
                     shrinkWrap: true,
@@ -344,18 +338,12 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                             color: Colors.black,
                           ),
                           onPressed: () {
-                            if (_textIndex == 1) {
+                            if (textInputList.length == 1) {
                               _addInputField(Colors.blue, Colors.purple,
                                   "choiceThree", "choiceFour");
-                              setState(() {
-                                _textIndex = _textIndex! + 1;
-                              });
-                            } else if (_textIndex == 2) {
+                            } else if (textInputList.length == 2) {
                               _addInputField(Colors.red, Colors.orange,
                                   "choiceFive", "choiceSix");
-                              setState(() {
-                                _textIndex = _textIndex! + 1;
-                              });
                             }
                           },
                         ),
@@ -370,10 +358,9 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                           icon:
                               const Icon(Icons.remove_circle_outline_outlined),
                           onPressed: () {
-                            if (_textIndex != 1) {
+                            if (textInputList.length != 1) {
                               setState(() {
                                 _removeInputField();
-                                _textIndex = _textIndex! - 1;
                               });
                             }
                           },
@@ -390,7 +377,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                     width: screenWidth / 15,
                   ),
                 ),
-                _textIndex == 1
+                textInputList.length == 1
                     ? AnimatedBuilder(
                         animation: animation,
                         child: AbsorbPointer(
@@ -415,7 +402,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                           child: child,
                         ),
                       )
-                    : _textIndex == 2
+                    : textInputList.length == 2
                         ? AnimatedBuilder(
                             animation: animation,
                             child: AbsorbPointer(
