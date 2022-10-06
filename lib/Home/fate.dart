@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:wheeloffate/Home/l10n/common.dart';
@@ -140,7 +138,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
 
   void _initAd() {
     InterstitialAd.load(
-        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        adUnitId: "ca-app-pub-6786586864283106/3346865138",
         request: AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: onLoaded,
@@ -304,7 +302,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
             AppLocalizations.of(context)!.kararVer,
             style: const TextStyle(fontFamily: "Righteous"),
           ),
-          centerTitle: true,
+          //centerTitle: true,
         ),
         body: Center(
           child: Padding(

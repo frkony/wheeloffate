@@ -1,12 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.wheeloffate">
+    package="com.eofsoftware.wheeloffate">
    <application
         android:label="wheeloffate"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <meta-data
-            android:name= "com.google.android.gms.ads.APPLICATION_ID" 
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -32,6 +29,12 @@
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
-            android:value="2" />
+            android:value="2"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID" 
+            android:value="ca-app-pub-6786586864283106~6302247251"/>
+        <!--<meta-data 
+            android:name="com.google.Android.gms.ads.AD_MANAGER_APP" 
+            android:value="true"/>-->
     </application>
 </manifest>

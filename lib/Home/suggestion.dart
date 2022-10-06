@@ -141,7 +141,7 @@ class _Suggestion extends State<Suggestion> {
           AppLocalizations.of(context)!.oneriler,
           style: const TextStyle(fontFamily: "Righteous"),
         ),
-        centerTitle: true,
+        //centerTitle: true,
       ),
       body: Center(
         child: Column(

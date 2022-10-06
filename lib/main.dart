@@ -16,8 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title:
-          'Wheel Of Fate', // görev yöneticisi tarafında uygulama küçülünce görünücek olan Title.
+      title: 'Wheel Of Fate',
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

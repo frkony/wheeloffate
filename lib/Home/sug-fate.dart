@@ -85,7 +85,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
 
   void _initAd() {
     InterstitialAd.load(
-        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        adUnitId: "ca-app-pub-6786586864283106/3346865138",
         request: AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: onLoaded,
@@ -168,7 +168,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.kararVer),
-          centerTitle: true,
+          //centerTitle: true,
         ),
         body: Center(
           child: Padding(
