@@ -1,3 +1,5 @@
+import 'dart:collection';
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
@@ -26,7 +28,7 @@ class _Suggestion extends State<Suggestion> {
   String? o4;
   String? o5;
   String? o6;
-  var randomSayi;
+  int randomSayi = 0;
 
   @override
   void initState() {
@@ -54,36 +56,31 @@ class _Suggestion extends State<Suggestion> {
     final double screenWidth = screenInfo.size.width;
     final double screenHeight = screenInfo.size.height;
 
-    onerilerFilm = oneriC.OneriFilm(context);
-    onerilerYemek = oneriC.OneriYemek(context);
-    onerilerAktivite = oneriC.OneriAktivite(context);
+    int randomSayiUret() {
+      int sayi;
+      sayi = Random().nextInt(11);
+      return sayi;
+    }
 
     void rastgeleDoldurCark() {
-      for (var i = 0; i < 6; i++) {
-        randomSayi = Random().nextInt(11);
-        if (i == 0) {
-          o1 = oneriler?[randomSayi];
-        }
-        if (i == 1) {
-          o2 = oneriler?[randomSayi];
-        }
-        if (i == 2) {
-          o3 = oneriler?[randomSayi];
-        }
-        if (i == 3) {
-          o4 = oneriler?[randomSayi];
-        }
-        if (i == 4) {
-          o5 = oneriler?[randomSayi];
-        }
-        if (i == 5) {
-          o6 = oneriler?[randomSayi];
+      List<int> eskiRandomSayi = [];
+      int i = 0;
+      List<int> secilmisSecenekler = [];
+      while (secilmisSecenekler.length < 6) { // 6.indeksi ekledikten sonra durucak
+        randomSayi = randomSayiUret();
+        if (eskiRandomSayi.isNotEmpty && eskiRandomSayi.contains(randomSayi)) {
+          continue;
+        } else {
+          secilmisSecenekler.add(randomSayi);
+          eskiRandomSayi.add(randomSayi);
         }
       }
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => SugFate(o1!, o2!, o3!, o4!, o5!, o6!)));
+              builder: (context) => SugFate(oneriler![secilmisSecenekler[0]], oneriler![secilmisSecenekler[1]],
+                oneriler![secilmisSecenekler[2]], oneriler![secilmisSecenekler[3]], oneriler![secilmisSecenekler[4]],
+                  oneriler![secilmisSecenekler[5]])));
     }
 
     Future openDialog(oneriBaslik) => showDialog(
@@ -125,9 +122,9 @@ class _Suggestion extends State<Suggestion> {
                       onPressed: () {
                         rastgeleDoldurCark();
                       },
-                      child: const Text(
-                        "Rastgele Doldur",
-                        style: TextStyle(fontFamily: "Righteous"),
+                      child: Text(
+                        AppLocalizations.of(context)!.rastgeleDoldur,
+                        style: const TextStyle(fontFamily: "Righteous"),
                       )),
                 ],
               )

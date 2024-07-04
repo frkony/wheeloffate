@@ -52,8 +52,6 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
 
     controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
-        debugPrint("girdi");
-        print(rastgeleSayi);
         await Future.delayed(const Duration(milliseconds: 700));
         if (rastgeleSayi > 0 && rastgeleSayi < 60) {
           sonuc = widget.s1;
@@ -86,7 +84,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
   void _initAd() {
     InterstitialAd.load(
         adUnitId: "ca-app-pub-6786586864283106/3346865138",
-        request: AdRequest(),
+        request: const AdRequest(),
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: onLoaded,
           onAdFailedToLoad: (error) {},
@@ -120,7 +118,7 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
           title: Text(AppLocalizations.of(context)!.kaderinTavsiyesi),
           content: Container(
             child: Text(
-                "${text != null ? text! : "Hay Aksi! Önerilerde bir problem var. Lütfen Bildirin."}"),
+                "${text != null ? text! : AppLocalizations.of(context)!.carkBosAlandaDurdu}"),
           ),
           actions: [
             GestureDetector(
@@ -129,9 +127,9 @@ class _SugFateState extends State<SugFate> with SingleTickerProviderStateMixin {
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10, right: 20),
-                  child: const Text(
-                    "OK",
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context)!.tamam,
+                    style: const TextStyle(
                       fontSize: 18,
                     ),
                   ),

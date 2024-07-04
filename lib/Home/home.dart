@@ -34,12 +34,7 @@ class _Home extends State<Home> {
     }
 
     return Scaffold(
-      /*appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Wheel Of Fate"),
-        /*actions: [
-        ],*/
-      ),*/
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

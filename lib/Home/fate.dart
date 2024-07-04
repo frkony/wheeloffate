@@ -173,7 +173,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
           title: Text(AppLocalizations.of(context)!.kaderinTavsiyesi),
           content: Container(
             child: Text(
-                "${text != null ? text : "Çark Boş bıraktığınız seçenekte durdu."}"),
+                "${text != null ? text : AppLocalizations.of(context)!.carkBosAlandaDurdu}"),
           ),
           actions: [
             GestureDetector(
@@ -182,8 +182,8 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                 },
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 10, right: 20),
-                  child: const Text(
-                    "OK",
+                  child: Text(
+                    AppLocalizations.of(context)!.tamam,
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -306,7 +306,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
         ),
         body: Center(
           child: Padding(
-            padding: EdgeInsets.only(top: screenHeight / 38),
+            padding: EdgeInsets.only(top: screenHeight / 45),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -329,7 +329,7 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 35,
+                        width: screenWidth / 8,
                         child: IconButton(
                           icon: const Icon(
                             Icons.add_circle_outline_outlined,
@@ -346,12 +346,12 @@ class _Fate extends State<Fate> with SingleTickerProviderStateMixin {
                           },
                         ),
                       ),
-                      const Text(
-                        "Seçenek Arttır / Azalt",
-                        style: TextStyle(fontFamily: "Righteous"),
+                      Text(
+                        AppLocalizations.of(context)!.secenekArttirAzalt,
+                        style: const TextStyle(fontFamily: "Righteous"),
                       ),
                       SizedBox(
-                        width: 35,
+                        width: screenWidth / 8,
                         child: IconButton(
                           icon:
                               const Icon(Icons.remove_circle_outline_outlined),
